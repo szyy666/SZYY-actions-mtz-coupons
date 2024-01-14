@@ -1,4 +1,4 @@
-const Notifier = require('../lib/Notifier')
+import Notifier from '../src/notifier/index.js'
 
 const notifier = new Notifier({
   barkKey: process.env.BARK_KEY,
@@ -19,14 +19,18 @@ const notifier = new Notifier({
 
 const date = new Date()
 const title = '推送测试'
-const content = `这是推送测试的消息:\n- 11111\n- 22222\n- ${[
-  date.getHours(),
-  date.getMinutes(),
-  date.getSeconds()
-].join(':')}`
+const time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+const content = [
+  '- ¥12 (满20可用 - 外卖节红包)',
+  '- ¥10 (满39可用 - 外卖节红包)',
+  '- ¥25 (满69可用 - 水果大额满减券)',
+  '- ¥15 (满59可用 - 便利店满减红包)'
+].join('\n')
 
-test('统一推送测试', async () => {
-  const res = await Promise.all(notifier.notify(title, content))
+test('Test Notifier', async () => {
+  const res = await Promise.all(
+    notifier.notify(title, `账号 X:\n${content}\n- Time ${time}`)
+  )
 
   expect(res.filter((e) => e.success).length).toBe(res.length)
 })
